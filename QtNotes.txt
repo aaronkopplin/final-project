@@ -1,0 +1,66 @@
+pip3 install pyqt5
+pip3 install pyqt5-tools
+
+
+to open the designer, just type designer at the command line
+create the GUI and save as myProgram.ui
+to create the python code, enter "pyuic5 -x myProgram.ui -o myProgram.py"
+
+create the designer file, and then generate the python code using the above command.
+you can access the objects in the designer file like so:
+
+----------------------------------------------------------------------------------------
+Ui_MainWindow, QtBaseClass = uic.loadUiType("filename.ui")
+class MyApp(QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        QMainWindow.__init__(self)
+        Ui_MainWindow.__init__(self)
+        self.setupUi(self)
+        self.pushButton_2.setText("hello")  # pushbutton_2 is an object in the designer
+----------------------------------------------------------------------------------------
+
+inside the generated python code, there is a class for the application called Ui_MainWindow.
+when we inherit this class, we can refer to the objects using self.objectName.
+so, if you have a button called myButton, you can say self.myButton.setText(hello).
+
+----------------------------------------
+background-color : rgb(166, 123, 91);
+border : 0px solid;
+border-top-color : white;
+border-left-color : white;
+border-bottom-color : white;
+border-right-color : white;
+----------------------------------------
+
+---------------------------------------------------
+pushbutton.setSetylSheet(defaultStyle = \
+    '''
+    QPushButton {
+        background-color : white;
+        border : 1px solid;
+        border-top-color : rgb(200, 200, 200);
+        border-left-color : rgb(200, 200, 200);
+        border-bottom-color : rgb(200, 200, 200);
+        border-right-color : rgb(200, 200, 200);
+    }
+    QPushButton:hover {
+        background-color: blue;
+        border : 1px solid;
+        border-top-color : rgb(200, 200, 200);
+        border-left-color : rgb(200, 200, 200);
+        border-bottom-color : rgb(200, 200, 200);
+        border-right-color : rgb(200, 200, 200);
+    }
+    QPushButton:pressed {
+        background-color: red;
+        border : 1px solid;
+        border-top-color : rgb(200, 200, 200);
+        border-left-color : rgb(200, 200, 200);
+        border-bottom-color : rgb(200, 200, 200);
+        border-right-color : rgb(200, 200, 200);
+    }
+
+     ''')
+-----------------------------------------------------------
+
+
