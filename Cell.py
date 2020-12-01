@@ -70,3 +70,6 @@ class Cell(QtWidgets.QPushButton):
     def changeWall(self, wall: str, activate: bool):
         self.setStyleSheet(re.sub("border-" + wall +"-color : [a-z]+;", "border-" + wall +"-color : " \
                                   + ("black" if activate else "lightgray") + ";", self.styleSheet()))
+
+    def changeBackgroundColor(self, color: str):
+        self.setStyleSheet(re.sub("background-color : [a-z]+;", "background-color : " + color + ";", self.styleSheet()))

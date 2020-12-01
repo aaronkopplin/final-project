@@ -1,3 +1,4 @@
+import copy
 import sys
 from PyQt5 import  QtWidgets
 from PyQt5.QtWidgets import QGridLayout, QWidget, QApplication, QVBoxLayout, QSpacerItem, QSplitter, QRadioButton
@@ -57,10 +58,12 @@ class Window(QWidget):
         self.key = event.key()
         print("maze " + str(self.key))
 
-    def aStarSearch(self, startIndex, goalIndex, matrix):
+    def aStarSearch(self, startIndex: int, goalIndex: int, matrix: list):
+        #euclidian distance
         def h(x1, y1, x2, y2):
             return math.sqrt(math.pow((x2 - x1), 2) + math.pow((y2 - y1), 2))
 
+        # start index is the 0-255 index of the starting cell
         openSet = [startIndex]
         closedSet = []
         path = {}
@@ -83,8 +86,7 @@ class Window(QWidget):
                     currentNodeIndex = path[currentNodeIndex]
                     total_path = [currentNodeIndex] + total_path
 
-                print(total_path)
-                return
+                return total_path
 
             currentChildren = []
             for i in range(len(matrix[currentNodeIndex])):
@@ -100,15 +102,22 @@ class Window(QWidget):
                             openSet[openSet.index(child)] / 16, openSet[openSet.index(child)] % 16, startIndex / 16,
                             startIndex % 16)):
                         continue
-                path[child] = currentNodeIndex;
+                path[child] = currentNodeIndex
                 openSet.append(child)
+
+    def highlightCells(self, path: list):
+        # path is a list of the 0-255 indexes of cells to be highlighted
+        for index in path:
+            self.maze.highlightCell(index, "yellow")
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     maze = Window()
-    #maze.aStarSearch(0, 255, grid.MATRIX)
     print("starting load")
     maze.loadMap(grid.MATRIX)
     print("finished")
+    path = maze.aStarSearch(0, 255, grid.MATRIX)
+    print(path)
+    maze.highlightCells(path)
     sys.exit(app.exec_())

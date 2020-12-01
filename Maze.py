@@ -1,3 +1,5 @@
+import copy
+
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QGridLayout, QWidget, QApplication
 import Cell
@@ -40,6 +42,7 @@ class Maze(QtWidgets.QWidget):
                 cell.setWalls(leftWall, rightWall, topWall, bottomWall)
 
     def loadGridFromMatrix(self, matrix: list):
+        matrix = copy.deepcopy(matrix)
         for row in range(self.height):
             for column in range(self.width):
                 adjacencyForCell = matrix.pop(0) # get the first row of the matrix
@@ -84,6 +87,11 @@ class Maze(QtWidgets.QWidget):
                         adjacencyRow.append(val)
                 rows.append(adjacencyRow)
         return rows
+
+    def highlightCell(self, index: int, color: str):
+        # index is the 0 -255 index of the cell to be high lighted
+        # convert the index to x, y
+        self.cells[int(index / self.width)][index % self.height].changeBackgroundColor(color)
 
     def printAdjacencyMatrix(self):
         mat = self.produceAdjacencyMartix()
