@@ -117,7 +117,7 @@ if __name__ == "__main__":
     print("starting load")
     maze.loadMap(grid.MATRIX)
     print("finished")
-    path = maze.aStarSearch(0, 255, grid.MATRIX)
+    path = maze.aStarSearch(15, 199, grid.MATRIX)
     print(path)
     maze.highlightCells(path)
     sys.exit(app.exec_())
