@@ -47,6 +47,20 @@ class Cell(QtWidgets.QPushButton):
     def bottomWall(self):
         return re.search("border-bottom-color : black;", self.styleSheet())
 
+    def setWall(self, wall: str):
+        if str == "left":
+            self.editorLeftWall = True
+            self.changeWall(wall, self.editorLeftWall)
+        if str == "right":
+            self.editorRightWall = True
+            self.changeWall(wall, self.editorRightWall)
+        if str == "top":
+            self.editorTopWall = True
+            self.changeWall(wall, self.editorTopWall)
+        if str == "bottom":
+            self.editorBottomWall = True
+            self.changeWall(wall, self.editorBottomWall)
+
     def updateWalls(self):
         self.changeWall("left", self.editorLeftWall)
         self.changeWall("right", self.editorRightWall)

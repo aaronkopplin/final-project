@@ -39,6 +39,29 @@ class Maze(QtWidgets.QWidget):
             for cell in row:
                 cell.setWalls(leftWall, rightWall, topWall, bottomWall)
 
+    def loadGridFromMatrix(self, matrix: list):
+        for row in range(self.height):
+            for column in range(self.width):
+                adjacencyForCell = matrix.pop(0) # get the first row of the matrix
+                cell = self.cells[row][column]
+
+                for row2 in range(self.height):
+                    for column2 in range(self.width):
+                        val = adjacencyForCell.pop(0)
+                        if val == 0:
+                            if column2 == column - 1 and row2 == row:
+                                cell.setWalls(True, cell.rightWall(), cell.topWall(), cell.bottomWall())
+                                cell.updateWalls()
+                            if column2 == column + 1 and row2 == row:
+                                cell.setWalls(cell.leftWall(), True, cell.topWall(), cell.bottomWall())
+                                cell.updateWalls()
+                            if column2 == column and row2 == row - 1:
+                                cell.setWalls(cell.leftWall(), cell.rightWall(), True, cell.bottomWall())
+                                cell.updateWalls()
+                            if column2 == column and row2 == row + 1:
+                                cell.setWalls(cell.leftWall(), cell.rightWall(), cell.topWall(), True)
+                                cell.updateWalls()
+
     def produceAdjacencyMartix(self):
         rows = []
         for row in range(self.height):

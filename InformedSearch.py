@@ -43,6 +43,9 @@ class Window(QWidget):
         verticalLayout.addItem(spacerItem)
         self.grid.addLayout(verticalLayout, 0, 1,1,1)
 
+    def loadMap(self, adjacency_matrix: list):
+        self.maze.loadGridFromMatrix(adjacency_matrix)
+
     def printMatrix(self):
         self.maze.printAdjacencyMatrix()
 
@@ -53,7 +56,6 @@ class Window(QWidget):
     def keyPressEvent(self, event):
         self.key = event.key()
         print("maze " + str(self.key))
-
 
     def aStarSearch(self, startIndex, goalIndex, matrix):
         def h(x1, y1, x2, y2):
@@ -106,4 +108,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     maze = Window()
     #maze.aStarSearch(0, 255, grid.MATRIX)
+    print("starting load")
+    maze.loadMap(grid.MATRIX)
+    print("finished")
     sys.exit(app.exec_())
