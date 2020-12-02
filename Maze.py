@@ -101,8 +101,9 @@ class Maze(QtWidgets.QWidget):
             print("[" + ", ".join(map(str, row)) + "]")
         print("---------------------------------------------------------------")
 
-    def updatePlayer(self, player: Player):
+    def updatePlayer(self, player: Player, previousPos: int):
         flat_list = [item for sublist in self.cells for item in sublist]
+        flat_list[previousPos].setText("")
         flat_list[player.position].setText(player.name[0])
 
 

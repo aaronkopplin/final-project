@@ -21,14 +21,34 @@ class Game:
         self.teams[team].players.append(player)
 
         # update the color of the board
-        self.window.updatePlayer(player)
+        self.window.updatePlayer(player, player.position)
 
     def handleCommand(self):
         args = self.window.commandLine.text().split(" ")
+        if len(args) <= 0:
+            return
         command = args[0]
 
+        print(command)
+
         if command == "move":
-            print("Moving player from {0} to {1}.".format(args[1], args[2]))
+            if len(args) < 3:
+                print("Command arguments invalid.")
+            else:
+                startPos = int(args[1])
+                endPos = int(args[2])
+
+                for player in self.teams[0].players:
+                    if player.position == startPos:
+                        player.move(endPos)
+                        self.window.updatePlayer(player, startPos)
+        elif command == "take_turn":
+            if len(args) < 3:
+                print("Command arguments invalid.")
+            else:
+                die1 = int(args[1])
+                die2 = int(args[2])
+                print("Two dice rolls: {0} and {1}".format(die1, die2))
         else:
             print("Unknown command.")
 

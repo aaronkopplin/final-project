@@ -114,8 +114,8 @@ class Window(QWidget):
         for index in path:
             self.maze.highlightCell(index, color)
 
-    def updatePlayer(self, player: Player):
-        self.maze.updatePlayer(player)
+    def updatePlayer(self, player: Player, previousPos: int):
+        self.maze.updatePlayer(player, previousPos)
 
 # if __name__ == "__main__":
 #     app = QApplication(sys.argv)
