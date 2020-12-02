@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QApplication
 class Game:
     def __init__(self):
         self.window = Window()
+        self.window.commandLine.returnPressed.connect(self.handleCommand)
         self.teams = [Team([]), Team([])]
         self.window.loadMap(grid.MATRIX)
 
@@ -21,6 +22,17 @@ class Game:
 
         # update the color of the board
         self.window.updatePlayer(player)
+
+    def handleCommand(self):
+        args = self.window.commandLine.text().split(" ")
+        command = args[0]
+
+        if command == "move":
+            print("Moving player from {0} to {1}.".format(args[1], args[2]))
+        else:
+            print("Unknown command.")
+
+        self.window.commandLine.clear()
 
 
 if __name__ == "__main__":
