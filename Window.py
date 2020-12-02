@@ -1,7 +1,7 @@
 import copy
 import sys
 from PyQt5 import  QtWidgets
-from PyQt5.QtWidgets import QGridLayout, QWidget, QApplication, QVBoxLayout, QSpacerItem, QSplitter, QRadioButton
+from PyQt5.QtWidgets import QGridLayout, QWidget, QApplication, QVBoxLayout, QSpacerItem, QSplitter, QRadioButton, QLineEdit
 from PyQt5.QtWidgets import QSizePolicy
 import grid
 from PyQt5.QtCore import QRect, Qt
@@ -22,6 +22,9 @@ class Window(QWidget):
         self.setLayout(self.grid)
         self.BuildMaze()
         self.BuildMenu()
+        self.commandLine = QLineEdit()
+        self.commandLine.resize(250, 20)
+        self.grid.addWidget(self.commandLine, 1, 0)
         self.show()
 
     def BuildMaze(self):
