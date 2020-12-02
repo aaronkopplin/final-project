@@ -5,13 +5,15 @@ from Window import Window
 import grid
 from Dial import Dial
 from PyQt5.QtWidgets import QApplication
+import map
 
 class Game:
     def __init__(self):
         self.window = Window()
         self.window.commandLine.returnPressed.connect(self.handleCommand)
         self.teams = [Team([]), Team([])]
-        self.window.loadMap(grid.MATRIX)
+        # self.window.loadMap(grid.MATRIX)
+        self.window.loadMap(map.map)
 
     def addPlayer(self, team: int, player: Player):
         self.teams[team].players.append(player)
@@ -21,12 +23,11 @@ class Game:
 
     def handleCommand(self):
         args = self.window.commandLine.text().split(" ")
+
         if len(args) <= 0:
             return
+
         command = args[0]
-
-        print(command)
-
         if command == "move":
             if len(args) < 3:
                 print("Command arguments invalid.")
@@ -72,21 +73,21 @@ if __name__ == "__main__":
     game.window.highlightCells(grid.ROOF, "lightyellow")
 
     # make the dials
-    thorsDial = Dial(150)
+    thorsDial = Dial(150, 6)
     thorsDial.speed = [10,10,10,10,10,10,9,9,9,0,0,0]
     thorsDial.attack = [11,11,11,10,10,10,9,9,9,0,0,0]
     thorsDial.defence = [18,17,17,17,17,17,17,17,16,0,0,0]
-    thorsDial.explosion = [4,4,3,3,3,3,3,3,3,0,0,0]
-    captainAmericasDial = Dial(50)
+    thorsDial.damage = [4, 4, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0]
+    captainAmericasDial = Dial(50, 5)
     captainAmericasDial.speed = [8, 7, 7, 6, 6, 5, 0, 0, 0, 0, 0, 0]
     captainAmericasDial.attack = [11, 10, 10, 9, 9, 9, 0, 0, 0, 0, 0, 0]
     captainAmericasDial.defence = [17, 17, 17, 16, 16, 17, 0, 0, 0, 0, 0, 0]
-    captainAmericasDial.explosion = [3, 3, 3, 2, 2, 2, 0, 0, 0, 0, 0, 0]
-    ironMansDial = Dial(100)
+    captainAmericasDial.damage = [3, 3, 3, 2, 2, 2, 0, 0, 0, 0, 0, 0]
+    ironMansDial = Dial(100, 7)
     ironMansDial.speed = [10,10,10,9,9,8,8,0,0,0,0,0]
     ironMansDial.attack = [10,10,10,9,9,9,9,0,0,0,0,0]
     ironMansDial.defence = [18,17,17,17,17,16,16,0,0,0,0,0]
-    ironMansDial.explosion = [4,3,3,2,2,2,2,0,0,0,0,0]
+    ironMansDial.damage = [4, 3, 3, 2, 2, 2, 2, 0, 0, 0, 0, 0]
 
     # add team 0
     game.addPlayer(0, Player(0, 100, "Thor", thorsDial, 0))

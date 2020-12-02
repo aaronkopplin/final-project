@@ -7,6 +7,7 @@ import grid
 from PyQt5.QtCore import QRect, Qt
 import Cell, Maze
 import math
+import map
 from Player import Player
 
 

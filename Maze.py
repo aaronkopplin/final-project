@@ -6,6 +6,7 @@ import Cell
 from PyQt5.QtWidgets import QSizePolicy
 import grid
 from Player import Player
+import os
 
 from PyQt5.QtCore import QRect
 
@@ -96,10 +97,27 @@ class Maze(QtWidgets.QWidget):
 
     def printAdjacencyMatrix(self):
         mat = self.produceAdjacencyMartix()
-        print("---------------------------------------------------------------")
+        # print("---------------------------------------------------------------")
+        # for row in mat:
+        #     print("[" + ", ".join(map(str, row)) + "]")
+        # print("---------------------------------------------------------------")
+
+        file_name = "map.py"
+        if os.path.exists(file_name):
+            os.remove(file_name)
+        file = open(file_name, "x")
+        file.write("map = [")
         for row in mat:
-            print("[" + ", ".join(map(str, row)) + "]")
-        print("---------------------------------------------------------------")
+            #  comma separate all of the lists, this will add one unnecessary comma that we will remove later
+            file.write("[" + ", ".join(map(str, row)) + "],\n")
+
+        # remove the last comma from the end of of the file
+        file.seek(0, os.SEEK_END)
+        file.seek(file.tell() - 2, 0)
+        file.truncate()
+
+        # write the closing bracket
+        file.write("]")
 
     def updatePlayer(self, player: Player, previousPos: int):
         flat_list = [item for sublist in self.cells for item in sublist]

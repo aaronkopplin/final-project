@@ -22,12 +22,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="558add01-ac2e-4788-b87d-3cd98b766d04" name="Default Changelist" comment="adding the dials">
+    <list default="true" id="558add01-ac2e-4788-b87d-3cd98b766d04" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dial.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dial.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Maze.py" beforeDir="false" afterPath="$PROJECT_DIR$/Maze.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/Player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +143,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606924529569</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="printing player stats">
+      <created>1606925785580</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1606925785580</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -157,6 +164,7 @@
     <MESSAGE value="changes" />
     <MESSAGE value="Slaper" />
     <MESSAGE value="adding the dials" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding the dials" />
+    <MESSAGE value="printing player stats" />
+    <option name="LAST_COMMIT_MESSAGE" value="printing player stats" />
   </component>
 </project>
