@@ -32,6 +32,9 @@ class Game:
 
                 path = self.window.maze.getPathTo(teammate.position, getTargetEnemy().position)
 
+                # for cell in path:
+
+
                 self.resetGridColors()
                 self.window.highlightCells(path, "red")
 
