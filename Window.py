@@ -105,10 +105,10 @@ class Window(QWidget):
                 path[child] = currentNodeIndex
                 openSet.append(child)
 
-    def highlightCells(self, path: list):
+    def highlightCells(self, path: list, color: str):
         # path is a list of the 0-255 indexes of cells to be highlighted
         for index in path:
-            self.maze.highlightCell(index, "yellow")
+            self.maze.highlightCell(index, color)
 
 
 # if __name__ == "__main__":
