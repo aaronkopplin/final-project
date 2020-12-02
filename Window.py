@@ -41,6 +41,10 @@ class Window(QWidget):
         self.commandLine = QLineEdit()
         verticalLayout.addWidget(self.commandLine)
 
+        self.playerButtons = [QtWidgets.QRadioButton() for i in range(3)]
+        for button in self.playerButtons:
+            verticalLayout.addWidget(button)
+
         self.printMAtrixButton = QtWidgets.QPushButton("Save Grid")
         verticalLayout.addWidget(self.printMAtrixButton)
         self.printMAtrixButton.clicked.connect(self.saveGrid)

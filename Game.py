@@ -11,10 +11,13 @@ import random
 class Game:
     def __init__(self):
         self.window = Window()
+        self.window.commandLine.returnPressed.connect(self.handleCommand)
         self.window.takeTurnButton.clicked.connect(self.takeTurn)
         self.window.moveButton.clicked.connect(self.moveCharacter)
         self.window.dealDamagebutton.clicked.connect(self.dealDamage)
         self.window.undoButton.clicked.connect(self.undo)
+        # for button in zip(self.window.playerButtons, self.):
+
         self.teams = [Team([]), Team([])]
         self.window.loadMap(map.map)
 
@@ -37,6 +40,10 @@ class Game:
         # update the color of the board
         self.window.updatePlayer(player, player.position)
 
+        # add a radio button
+        if len(self.teams[1].players) > 0:
+            self.window.playerButtons[len(self.teams[1].players) - 1].setText(self.teams[1].players[-1].id)
+
     def moveCharacter(self):
         args = self.window.commandLine.text().split(" ")
 
@@ -54,6 +61,12 @@ class Game:
         def cellNextToEnemy(cell: int, enemies: list):
             for enemy in enemies:
                 if cell in getCellsAdjacentTo(enemy.position):
+                    return True
+            return False
+
+        def playerOnCell(cell: int):
+            for player in self.getPlayers():
+                if player.position == cell:
                     return True
             return False
 
@@ -79,11 +92,18 @@ class Game:
                 # d6 if you roll 4-6 you can move, else your action is over.
                 steps = 0
                 while True:
-                    if steps >= teammate.dial.currentSpeed():
+                    if steps >= teammate.currentSpeed():
+                        print("steps >= teammate speed ")
                         break
-                    if len(path) == 0:
+                    if len(path) == 1:
+                        print("len path = 1")
                         break
-                    if cellNextToEnemy(path[0], enemies):
+                    if cellNextToEnemy(path[1], enemies):
+                        print("cell next to enemy")
+                        break
+                    if playerOnCell(path[1]):
+                        print("curr pos: " + str(teammate.position) + " next position: " + str(path[1]))
+                        print("player on cell")
                         break
 
                     self.movePlayer(teammate, teammate.position, path.pop(0))
