@@ -111,13 +111,13 @@ class Window(QWidget):
             self.maze.highlightCell(index, "yellow")
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    maze = Window()
-    print("starting load")
-    maze.loadMap(grid.MATRIX)
-    print("finished")
-    path = maze.aStarSearch(15, 199, grid.MATRIX)
-    print(path)
-    maze.highlightCells(path)
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     maze = Window()
+#     print("starting load")
+#     maze.loadMap(grid.MATRIX)
+#     print("finished")
+#     path = maze.aStarSearch(15, 199, grid.MATRIX)
+#     print(path)
+#     maze.highlightCells(path)
+#     sys.exit(app.exec_())
