@@ -3,6 +3,7 @@ from Team import Team
 from Player import Player
 from Window import Window
 import grid
+from Dial import Dial
 from PyQt5.QtWidgets import QApplication
 
 class Game:
@@ -11,11 +12,6 @@ class Game:
         self.window.commandLine.returnPressed.connect(self.handleCommand)
         self.teams = [Team([]), Team([])]
         self.window.loadMap(grid.MATRIX)
-
-    def updatePLayerLocations(self):
-        for team in self.teams:
-            for player in team.players:
-                self.window.updatePlayer(player)
 
     def addPlayer(self, team: int, player: Player):
         self.teams[team].players.append(player)
@@ -57,17 +53,40 @@ class Game:
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
+    # make the game, the game has the window and the grid
     game = Game()
+
+    # color the board
     game.window.highlightCells(grid.WATER, "lightblue")
     game.window.highlightCells(grid.ZONES, "violet")
     game.window.highlightCells(grid.ROOF, "lightyellow")
 
-    game.addPlayer(0, Player(0, 100, "Thor"))
-    game.addPlayer(0, Player(1, 100, "Capitain America"))
-    game.addPlayer(0, Player(2, 100, "Iron Man"))
+    # make the dials
+    thorsDial = Dial(150)
+    thorsDial.speed = [10,10,10,10,10,10,9,9,9,0,0,0]
+    thorsDial.attack = [11,11,11,10,10,10,9,9,9,0,0,0]
+    thorsDial.defence = [18,17,17,17,17,17,17,17,16,0,0,0]
+    thorsDial.explosion = [4,4,3,3,3,3,3,3,3,0,0,0]
+    captainAmericasDial = Dial(50)
+    captainAmericasDial.speed = [8, 7, 7, 6, 6, 5, 0, 0, 0, 0, 0, 0]
+    captainAmericasDial.attack = [11, 10, 10, 9, 9, 9, 0, 0, 0, 0, 0, 0]
+    captainAmericasDial.defence = [17, 17, 17, 16, 16, 17, 0, 0, 0, 0, 0, 0]
+    captainAmericasDial.explosion = [3, 3, 3, 2, 2, 2, 0, 0, 0, 0, 0, 0]
+    ironMansDial = Dial(100)
+    ironMansDial.speed = [10,10,10,9,9,8,8,0,0,0,0,0]
+    ironMansDial.attack = [10,10,10,9,9,9,9,0,0,0,0,0]
+    ironMansDial.defence = [18,17,17,17,17,16,16,0,0,0,0,0]
+    ironMansDial.explosion = [4,3,3,2,2,2,2,0,0,0,0,0]
 
-    game.addPlayer(1, Player(221, 100, "Thor"))
-    game.addPlayer(1, Player(222, 100, "Capitain America"))
-    game.addPlayer(1, Player(223, 100, "Iron Man"))
+    # add team 0
+    game.addPlayer(0, Player(0, 100, "Thor", thorsDial))
+    game.addPlayer(0, Player(1, 100, "Captain America", captainAmericasDial))
+    game.addPlayer(0, Player(2, 100, "Iron Man", ironMansDial))
+
+    # add team 1
+    game.addPlayer(1, Player(221, 100, "Thor", thorsDial))
+    game.addPlayer(1, Player(222, 100, "Captain America", captainAmericasDial))
+    game.addPlayer(1, Player(223, 100, "Iron Man", ironMansDial))
 
     sys.exit(app.exec_())  # necessary

@@ -24,13 +24,13 @@ class Window(QWidget):
         self.BuildMenu()
         self.commandLine = QLineEdit()
         self.commandLine.resize(250, 20)
-        self.grid.addWidget(self.commandLine, 1, 0)
+        self.grid.addWidget(self.commandLine)
         self.show()
 
     def BuildMaze(self):
         self.maze = Maze.Maze(self.mazeWidth, self.mazeHeight)
         self.maze.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.grid.addWidget(self.maze, 0, 0)
+        self.grid.addWidget(self.maze)
         self.grid.setColumnStretch(0, 1)
 
     def BuildMenu(self):
