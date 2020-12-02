@@ -11,6 +11,15 @@ class Dial:
     def currentSpeed(self):
         return self.speed[0]
 
+    def currentAttack(self):
+        return self.attack[0]
+
+    def currentDefence(self):
+        return self.defence[0]
+
+    def currentDamage(self):
+        return self.damage[0]
+
     def click(self):
         self.speed.pop(0)
         self.attack.pop(0)

@@ -19,7 +19,14 @@ class Game:
         self.window.loadMap(map.map)
 
     def dealDamage(self):
-        print("hello")
+        args = self.window.commandLine.text().split(" ")
+        if (len(args) < 1):
+            return
+
+        for player in self.getPlayers():
+            if player.id == args[0]:
+                player.takeDamage(int(args[1]), int(args[2]))
+                break
 
     def addPlayer(self, team: int, player: Player):
         self.teams[team].players.append(player)
