@@ -13,3 +13,11 @@ class Dial:
         self.defence.pop(0)
         self.explosion.pop(0)
         self.clickLevel += 1
+
+    def printDial(self):
+        print("click level: " + str(self.clickLevel))
+        print("speed:\t\t" + " ".join(map(str, self.speed)))
+        print("attack:\t\t" + " ".join(map(str, self.attack)))
+        print("defence:\t" + " ".join(map(str, self.defence)))
+        print("explosion:\t" + " ".join(map(str, self.explosion)))
+        print("point value: " + str(self.pointValue))

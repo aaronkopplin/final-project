@@ -45,6 +45,15 @@ class Game:
                 die1 = int(args[1])
                 die2 = int(args[2])
                 print("Two dice rolls: {0} and {1}".format(die1, die2))
+        elif command == "player":  # player T0
+            if len(args) < 2:
+                print("invalid command")
+            else:
+                playerID = args[1]
+                for team in self.teams:
+                    for player in team.players:
+                        if player.id == playerID:
+                            player.printDial()
         else:
             print("Unknown command.")
 
@@ -80,13 +89,13 @@ if __name__ == "__main__":
     ironMansDial.explosion = [4,3,3,2,2,2,2,0,0,0,0,0]
 
     # add team 0
-    game.addPlayer(0, Player(0, 100, "Thor", thorsDial))
-    game.addPlayer(0, Player(1, 100, "Captain America", captainAmericasDial))
-    game.addPlayer(0, Player(2, 100, "Iron Man", ironMansDial))
+    game.addPlayer(0, Player(0, 100, "Thor", thorsDial, 0))
+    game.addPlayer(0, Player(1, 100, "Captain America", captainAmericasDial, 0))
+    game.addPlayer(0, Player(2, 100, "Iron Man", ironMansDial, 0))
 
     # add team 1
-    game.addPlayer(1, Player(221, 100, "Thor", thorsDial))
-    game.addPlayer(1, Player(222, 100, "Captain America", captainAmericasDial))
-    game.addPlayer(1, Player(223, 100, "Iron Man", ironMansDial))
+    game.addPlayer(1, Player(221, 100, "Thor", thorsDial, 1))
+    game.addPlayer(1, Player(222, 100, "Captain America", captainAmericasDial, 1))
+    game.addPlayer(1, Player(223, 100, "Iron Man", ironMansDial, 1))
 
     sys.exit(app.exec_())  # necessary

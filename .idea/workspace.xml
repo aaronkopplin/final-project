@@ -22,14 +22,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="558add01-ac2e-4788-b87d-3cd98b766d04" name="Default Changelist" comment="Slaper">
-      <change afterPath="$PROJECT_DIR$/Dial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/final-project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/final-project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="558add01-ac2e-4788-b87d-3cd98b766d04" name="Default Changelist" comment="adding the dials">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dial.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dial.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Maze.py" beforeDir="false" afterPath="$PROJECT_DIR$/Maze.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/Player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +136,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606871622299</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="adding the dials">
+      <created>1606924529569</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1606924529569</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -151,6 +156,7 @@
     <MESSAGE value="adding more classes" />
     <MESSAGE value="changes" />
     <MESSAGE value="Slaper" />
-    <option name="LAST_COMMIT_MESSAGE" value="Slaper" />
+    <MESSAGE value="adding the dials" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding the dials" />
   </component>
 </project>
