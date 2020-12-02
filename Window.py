@@ -77,7 +77,6 @@ class Window(QWidget):
 
     def keyPressEvent(self, event):
         self.key = event.key()
-        print("maze " + str(self.key))
 
     def aStarSearch(self, startIndex: int, goalIndex: int, matrix: list):
         #euclidian distance
