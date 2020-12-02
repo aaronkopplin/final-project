@@ -173,6 +173,13 @@ class Maze(QtWidgets.QWidget):
         # write the closing bracket
         file.write("]")
 
+    def refreshBoard(self, players: list):
+        flat_list = [item for sublist in self.cells for item in sublist]
+        for cell in flat_list:
+            cell.setText("")
+        for player in players:
+            flat_list[player.position].setText(player.id)
+
     def updatePlayer(self, player: Player, previousPos: int):
         flat_list = [item for sublist in self.cells for item in sublist]
         flat_list[previousPos].setText("")

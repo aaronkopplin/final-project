@@ -124,6 +124,9 @@ class Window(QWidget):
     def updatePlayer(self, player: Player, previousPos: int):
         self.maze.updatePlayer(player, previousPos)
 
+    def refreshBoard(self, players: list):
+        self.maze.refreshBoard(players)
+
 # if __name__ == "__main__":
 #     app = QApplication(sys.argv)
 #     maze = Window()
