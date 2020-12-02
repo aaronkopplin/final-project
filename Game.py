@@ -11,18 +11,39 @@ import random
 class Game:
     def __init__(self):
         self.window = Window()
-        self.window.commandLine.returnPressed.connect(self.handleCommand)
         self.window.takeTurnButton.clicked.connect(self.takeTurn)
         self.window.moveButton.clicked.connect(self.moveCharacter)
         self.window.dealDamagebutton.clicked.connect(self.dealDamage)
         self.window.undoButton.clicked.connect(self.undo)
-        # for button in zip(self.window.playerButtons, self.):
-
         self.teams = [Team([]), Team([])]
         self.window.loadMap(map.map)
+        for button in self.window.playerButtons:
+            button.clicked.connect(self.playerButtonListener)
+
+    def playerButtonListener(self):
+        def getTargetEnemy():
+            return [enemy for enemy in self.teams[0].players if not enemy.isKOd][0]
+        # display the proposed path for the player that is selected
+        for button in self.window.playerButtons:
+            if button.isChecked():
+                teammate = self.getPlayer(button.text())
+                print(teammate.id)
+                print(getTargetEnemy().id)
+
+                path = self.window.maze.getPathTo(teammate.position, getTargetEnemy().position)
+
+                self.resetGridColors()
+                self.window.highlightCells(path, "red")
+
 
     def undo(self):
         print("undo")
+
+    def getPlayer(self, id: str):
+        for player in self.getPlayers():
+            if player.id == id:
+                return player
+        return None
 
     def dealDamage(self):
         args = self.window.commandLine.text().split(" ")
