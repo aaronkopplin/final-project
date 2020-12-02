@@ -51,6 +51,9 @@ class Window(QWidget):
         self.moveButton = QtWidgets.QPushButton("Move Hero")
         verticalLayout.addWidget(self.moveButton)
 
+        self.dealDamagebutton = QtWidgets.QPushButton("Deal Damage")
+        verticalLayout.addWidget(self.dealDamagebutton)
+
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         verticalLayout.addItem(spacerItem)
         self.grid.addLayout(verticalLayout, 0, 1,1,1)

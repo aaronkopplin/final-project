@@ -14,8 +14,12 @@ class Game:
         self.window.commandLine.returnPressed.connect(self.handleCommand)
         self.window.takeTurnButton.clicked.connect(self.takeTurn)
         self.window.moveButton.clicked.connect(self.moveCharacter)
+        self.window.dealDamagebutton.clicked.connect(self.dealDamage)
         self.teams = [Team([]), Team([])]
         self.window.loadMap(map.map)
+
+    def dealDamage(self):
+        print("hello")
 
     def addPlayer(self, team: int, player: Player):
         self.teams[team].players.append(player)
