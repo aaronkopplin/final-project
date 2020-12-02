@@ -23,9 +23,6 @@ class Window(QWidget):
         self.setLayout(self.grid)
         self.BuildMaze()
         self.BuildMenu()
-        self.commandLine = QLineEdit()
-        self.commandLine.resize(250, 20)
-        self.grid.addWidget(self.commandLine)
         self.show()
 
     def BuildMaze(self):
@@ -41,18 +38,28 @@ class Window(QWidget):
             verticalLayout.addWidget(button)
             button.toggled.connect(self.buttonsClicked)
 
-        self.printMAtrixButton = QtWidgets.QPushButton("Print Matrix")
+        self.commandLine = QLineEdit()
+        verticalLayout.addWidget(self.commandLine)
+
+        self.printMAtrixButton = QtWidgets.QPushButton("Save Grid")
         verticalLayout.addWidget(self.printMAtrixButton)
-        self.printMAtrixButton.clicked.connect(self.printMatrix)
+        self.printMAtrixButton.clicked.connect(self.saveGrid)
+
+        self.takeTurnButton = QtWidgets.QPushButton("Take Turn")
+        verticalLayout.addWidget(self.takeTurnButton)
+        self.takeTurnButton.clicked.connect(self.takeTurn)
 
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         verticalLayout.addItem(spacerItem)
         self.grid.addLayout(verticalLayout, 0, 1,1,1)
 
+    def takeTurn(self):
+        print("taking turn")
+
     def loadMap(self, adjacency_matrix: list):
         self.maze.loadGridFromMatrix(adjacency_matrix)
 
-    def printMatrix(self):
+    def saveGrid(self):
         self.maze.printAdjacencyMatrix()
 
     def buttonsClicked(self):

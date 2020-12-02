@@ -24,9 +24,7 @@
   <component name="ChangeListManager">
     <list default="true" id="558add01-ac2e-4788-b87d-3cd98b766d04" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dial.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dial.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maze.py" beforeDir="false" afterPath="$PROJECT_DIR$/Maze.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -150,7 +148,21 @@
       <option name="project" value="LOCAL" />
       <updated>1606925785580</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="update the map so that our characters will not walk over the roof which is supposed to be unreachable terrain">
+      <created>1606928354868</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1606928354868</updated>
+    </task>
+    <task id="LOCAL-00010" summary="forgot to add the map.py file">
+      <created>1606928468018</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1606928468018</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -165,6 +177,8 @@
     <MESSAGE value="Slaper" />
     <MESSAGE value="adding the dials" />
     <MESSAGE value="printing player stats" />
-    <option name="LAST_COMMIT_MESSAGE" value="printing player stats" />
+    <MESSAGE value="update the map so that our characters will not walk over the roof which is supposed to be unreachable terrain" />
+    <MESSAGE value="forgot to add the map.py file" />
+    <option name="LAST_COMMIT_MESSAGE" value="forgot to add the map.py file" />
   </component>
 </project>

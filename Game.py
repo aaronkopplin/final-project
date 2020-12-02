@@ -12,7 +12,6 @@ class Game:
         self.window = Window()
         self.window.commandLine.returnPressed.connect(self.handleCommand)
         self.teams = [Team([]), Team([])]
-        # self.window.loadMap(grid.MATRIX)
         self.window.loadMap(map.map)
 
     def addPlayer(self, team: int, player: Player):
