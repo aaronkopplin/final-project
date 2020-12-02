@@ -26,30 +26,53 @@ class Game:
     def moveCharacter(self):
         print("move")
 
+
+
+
+
     def takeTurn(self):
+        def getCellsAdjacentTo(cell: int):
+            return [cell + 1, cell - 1, cell + 16, cell - 16, cell + 16 + 1, cell + 16 - 1, cell - 16 + 1,
+                    cell - 16 - 1]
+
+        def cellNextToEnemy(cell: int, enemies: list):
+            for enemy in enemies:
+                if cell in getCellsAdjacentTo(enemy.position):
+                    return True
+            return False
+
         print("turn")
         die1 = random.randint(1, 6)
         die2 = random.randint(1, 6)
 
         # try to close the distance with the other players
-        enemies = self.teams[0].players
-        teammates = self.teams[1].players
+        # seek out the first enemy that is not ko'd and have all teammates close on that enemy
+        enemies = [enemy for enemy in self.teams[0].players if not enemy.isKOd]
+        teammates = [member for member in self.teams[1].players if not member.isKOd]
         for teammate in teammates:
-            # seek out the first enemy that is not ko'd and have all teammates close on that enemy
-            not_kod_enemies = [enemy for enemy in enemies if not enemy.isKOd]
-            if len(not_kod_enemies) > 0:
-                enemy = not_kod_enemies[0]
+            if len(enemies) > 0:
+                enemy = enemies[0]
                 path = self.window.maze.getPathTo(teammate.position, enemy.position)
 
                 self.resetGridColors()
                 self.window.highlightCells(path, "red")
 
-                startLocation = teammate.position
-                # if player speed is 10, then move ten spaces unless the path is shorter than 10, then use path[-1]
-                endLocation = path[teammate.currentSpeed()] if teammate.currentSpeed() < len(path) else path[-1]
+                # if you move next to an opposing player or into hindering terrain, you have to stop moving
+                # if you begin a move in hindering terrain, you halve your speed value before moving
+                # if you being a move next to an opposing player, you have to break away first. to do so, roll a
+                # d6 if you roll 4-6 you can move, else your action is over.
+                steps = 0
+                while True:
+                    if steps >= teammate.currentSpeed():
+                        break
+                    if len(path) == 0:
+                        break
+                    if cellNextToEnemy(path[0], enemies):
+                        break
 
-                # add logic here to the path to stop the movement if there is a player or water in the way.
-                self.movePlayer(teammate, startLocation, endLocation)
+                    self.movePlayer(teammate, teammate.position, path.pop(0))
+                    steps += 1
+
             else:
                 print("GAME OVER, ALL ENEMIES OK'D")
 
