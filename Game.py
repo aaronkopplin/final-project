@@ -26,10 +26,6 @@ class Game:
     def moveCharacter(self):
         print("move")
 
-
-
-
-
     def takeTurn(self):
         def getCellsAdjacentTo(cell: int):
             return [cell + 1, cell - 1, cell + 16, cell - 16, cell + 16 + 1, cell + 16 - 1, cell - 16 + 1,
@@ -76,9 +72,18 @@ class Game:
             else:
                 print("GAME OVER, ALL ENEMIES KO'D")
 
+    def getPlayers(self):
+        players = []
+        for team in self.teams:
+            for player in team.players:
+                players.append(player)
+
+        return players
+
     def movePlayer(self, player: Player, startLoc: int, endLoc: int):
         player.move(endLoc)
-        self.window.updatePlayer(player, startLoc)
+        # self.window.updatePlayer(player, startLoc)
+        self.window.refreshBoard(self.getPlayers())
 
     def handleCommand(self):
         args = self.window.commandLine.text().split(" ")
