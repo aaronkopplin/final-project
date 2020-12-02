@@ -8,6 +8,10 @@ class Player:
         self.dial = dial
         self.team = team
         self.id = self.name[0] + str(self.team)
+        self.isKOd = False
+
+    def currentSpeed(self):
+        return self.dial.currentSpeed()
 
     def move(self, position: int):
         self.position = position

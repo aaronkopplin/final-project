@@ -47,14 +47,13 @@ class Window(QWidget):
 
         self.takeTurnButton = QtWidgets.QPushButton("Take Turn")
         verticalLayout.addWidget(self.takeTurnButton)
-        self.takeTurnButton.clicked.connect(self.takeTurn)
+
+        self.moveButton = QtWidgets.QPushButton("Move Hero")
+        verticalLayout.addWidget(self.moveButton)
 
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         verticalLayout.addItem(spacerItem)
         self.grid.addLayout(verticalLayout, 0, 1,1,1)
-
-    def takeTurn(self):
-        print("taking turn")
 
     def loadMap(self, adjacency_matrix: list):
         self.maze.loadGridFromMatrix(adjacency_matrix)

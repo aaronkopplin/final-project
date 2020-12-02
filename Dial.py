@@ -8,12 +8,18 @@ class Dial:
         self.pointValue = pointValue
         self.lightningBolt = lightningBolt
 
+    def currentSpeed(self):
+        return self.speed[0]
+
     def click(self):
         self.speed.pop(0)
         self.attack.pop(0)
         self.defence.pop(0)
         self.damage.pop(0)
         self.clickLevel += 1
+
+        if self.speed[0] == 0:
+            print ("PLAYER KO'D")
 
     def printDial(self):
         print("click level: " + str(self.clickLevel))

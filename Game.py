@@ -6,11 +6,14 @@ import grid
 from Dial import Dial
 from PyQt5.QtWidgets import QApplication
 import map
+import random
 
 class Game:
     def __init__(self):
         self.window = Window()
         self.window.commandLine.returnPressed.connect(self.handleCommand)
+        self.window.takeTurnButton.clicked.connect(self.takeTurn)
+        self.window.moveButton.clicked.connect(self.moveCharacter)
         self.teams = [Team([]), Team([])]
         self.window.loadMap(map.map)
 
@@ -19,6 +22,38 @@ class Game:
 
         # update the color of the board
         self.window.updatePlayer(player, player.position)
+
+    def moveCharacter(self):
+        print("move")
+
+    def takeTurn(self):
+        print("turn")
+        die1 = random.randint(1, 6)
+        die2 = random.randint(1, 6)
+
+        # try to close the distance with the other players
+
+        enemies = self.teams[0].players
+        teammates = self.teams[1].players
+        for teammate in teammates:
+            # seek out the first enemy that is not ko'd and have all teammates close on that enemy
+            not_kod_enemies = [enemy for enemy in enemies if not enemy.isKOd]
+            if len(not_kod_enemies) > 0:
+                enemy = not_kod_enemies[0]
+                path = self.window.maze.getPathTo(teammate.position, enemy.position)
+
+                self.resetGridColors()
+                self.window.highlightCells(path, "red")
+
+                startLocation = teammate.position
+                endLocation = path[teammate.currentSpeed()] if teammate.currentSpeed() < len(path) else path[-1]
+                self.movePlayer(teammate, startLocation, endLocation)
+            else:
+                print("GAME OVER, ALL ENEMIES OK'D")
+
+    def movePlayer(self, player: Player, startLoc: int, endLoc: int):
+        player.move(endLoc)
+        self.window.updatePlayer(player, startLoc)
 
     def handleCommand(self):
         args = self.window.commandLine.text().split(" ")
@@ -59,6 +94,13 @@ class Game:
 
         self.window.commandLine.clear()
 
+    def resetGridColors(self):
+        # color the board
+        game.window.highlightCells([x for x in range(self.window.maze.width * self.window.maze.height)], "white")
+        game.window.highlightCells(grid.WATER, "lightblue")
+        game.window.highlightCells(grid.ZONES, "violet")
+        game.window.highlightCells(grid.ROOF, "lightyellow")
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -66,10 +108,7 @@ if __name__ == "__main__":
     # make the game, the game has the window and the grid
     game = Game()
 
-    # color the board
-    game.window.highlightCells(grid.WATER, "lightblue")
-    game.window.highlightCells(grid.ZONES, "violet")
-    game.window.highlightCells(grid.ROOF, "lightyellow")
+    game.resetGridColors()
 
     # make the dials
     thorsDial = Dial(150, 6)

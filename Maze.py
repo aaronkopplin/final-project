@@ -7,7 +7,8 @@ from PyQt5.QtWidgets import QSizePolicy
 import grid
 from Player import Player
 import os
-
+import math
+import map
 from PyQt5.QtCore import QRect
 
 
@@ -25,6 +26,59 @@ class Maze(QtWidgets.QWidget):
         self.cells = []
         self.BuildGrid()
         self.show()
+
+    def getPathTo(self, start: int, end: int):
+        path = self.aStarSearch(min(start, end), max(start, end), map.map)
+        if start == max(start, end):
+            path.reverse()
+        return path
+
+    def aStarSearch(self, startIndex: int, goalIndex: int, matrix: list):
+        #euclidian distance
+        def h(x1, y1, x2, y2):
+            return math.sqrt(math.pow((x2 - x1), 2) + math.pow((y2 - y1), 2))
+
+        # start index is the 0-255 index of the starting cell
+        openSet = [startIndex]
+        closedSet = []
+        path = {}
+        while len(openSet) > 0:
+            currentNodeIndex = 0
+            for nodeIndex in openSet:
+                if h(nodeIndex / 16, nodeIndex % 16, goalIndex / 16, goalIndex % 16) < h(currentNodeIndex / 16,
+                                                                                         currentNodeIndex % 16,
+                                                                                         goalIndex / 16,
+                                                                                         goalIndex % 16):
+                    currentNodeIndex = nodeIndex
+
+            # path.append(currentNodeIndex)
+            openSet.remove(currentNodeIndex)
+            closedSet.append(currentNodeIndex)
+
+            if (currentNodeIndex == goalIndex):
+                total_path = [currentNodeIndex]
+                while currentNodeIndex in path.keys():
+                    currentNodeIndex = path[currentNodeIndex]
+                    total_path = [currentNodeIndex] + total_path
+
+                return total_path
+
+            currentChildren = []
+            for i in range(len(matrix[currentNodeIndex])):
+                if (matrix[currentNodeIndex][i]):
+                    currentChildren.append(i)
+
+            for child in currentChildren:
+                if child in closedSet:
+                    continue
+
+                if child in openSet:
+                    if (h(child / 16, child % 16, startIndex / 16, startIndex % 16) > h(
+                            openSet[openSet.index(child)] / 16, openSet[openSet.index(child)] % 16, startIndex / 16,
+                            startIndex % 16)):
+                        continue
+                path[child] = currentNodeIndex
+                openSet.append(child)
 
     def BuildGrid(self):
         for numeric in range(self.height):  # X axis
