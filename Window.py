@@ -7,6 +7,7 @@ import grid
 from PyQt5.QtCore import QRect, Qt
 import Cell, Maze
 import math
+from Player import Player
 
 
 class Window(QWidget):
@@ -105,19 +106,21 @@ class Window(QWidget):
                 path[child] = currentNodeIndex
                 openSet.append(child)
 
-    def highlightCells(self, path: list):
+    def highlightCells(self, path: list, color: str):
         # path is a list of the 0-255 indexes of cells to be highlighted
         for index in path:
-            self.maze.highlightCell(index, "yellow")
+            self.maze.highlightCell(index, color)
 
+    def updatePlayer(self, player: Player):
+        self.maze.updatePlayer(player)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    maze = Window()
-    print("starting load")
-    maze.loadMap(grid.MATRIX)
-    print("finished")
-    path = maze.aStarSearch(0, 255, grid.MATRIX)
-    print(path)
-    maze.highlightCells(path)
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     maze = Window()
+#     print("starting load")
+#     maze.loadMap(grid.MATRIX)
+#     print("finished")
+#     path = maze.aStarSearch(15, 199, grid.MATRIX)
+#     print(path)
+#     maze.highlightCells(path)
+#     sys.exit(app.exec_())
