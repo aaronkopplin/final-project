@@ -181,8 +181,13 @@ class Maze(QtWidgets.QWidget):
             flat_list[player.position].setText(player.id)
 
     def updatePlayer(self, player: Player, previousPos: int):
+        print("0")
         flat_list = [item for sublist in self.cells for item in sublist]
+        print("1")
         flat_list[previousPos].setText("")
+        print("2")
+        print(player.position, player.id)
         flat_list[player.position].setText(player.id)
+        print("complete")
 
 

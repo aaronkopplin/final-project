@@ -11,7 +11,6 @@ import random
 class Game:
     def __init__(self):
         self.window = Window()
-        self.window.commandLine.returnPressed.connect(self.handleCommand)
         self.window.takeTurnButton.clicked.connect(self.takeTurn)
         self.window.moveButton.clicked.connect(self.moveCharacter)
         self.window.dealDamagebutton.clicked.connect(self.dealDamage)
@@ -39,7 +38,13 @@ class Game:
         self.window.updatePlayer(player, player.position)
 
     def moveCharacter(self):
-        print("move")
+        args = self.window.commandLine.text().split(" ")
+
+        for player in self.getPlayers():
+            if player.id == args[0]:
+                oldPos = player.position
+                player.move(int(args[1]))
+                self.window.updatePlayer(player, oldPos)
 
     def takeTurn(self):
         def getCellsAdjacentTo(cell: int):
@@ -74,7 +79,7 @@ class Game:
                 # d6 if you roll 4-6 you can move, else your action is over.
                 steps = 0
                 while True:
-                    if steps >= teammate.currentSpeed():
+                    if steps >= teammate.dial.currentSpeed():
                         break
                     if len(path) == 0:
                         break
@@ -99,45 +104,6 @@ class Game:
         player.move(endLoc)
         # self.window.updatePlayer(player, startLoc)
         self.window.refreshBoard(self.getPlayers())
-
-    def handleCommand(self):
-        args = self.window.commandLine.text().split(" ")
-
-        if len(args) <= 0:
-            return
-
-        command = args[0]
-        if command == "move":
-            if len(args) < 3:
-                print("Command arguments invalid.")
-            else:
-                startPos = int(args[1])
-                endPos = int(args[2])
-
-                for player in self.teams[0].players:
-                    if player.position == startPos:
-                        player.move(endPos)
-                        self.window.updatePlayer(player, startPos)
-        elif command == "take_turn":
-            if len(args) < 3:
-                print("Command arguments invalid.")
-            else:
-                die1 = int(args[1])
-                die2 = int(args[2])
-                print("Two dice rolls: {0} and {1}".format(die1, die2))
-        elif command == "player":  # player T0
-            if len(args) < 2:
-                print("invalid command")
-            else:
-                playerID = args[1]
-                for team in self.teams:
-                    for player in team.players:
-                        if player.id == playerID:
-                            player.printDial()
-        else:
-            print("Unknown command.")
-
-        self.window.commandLine.clear()
 
     def resetGridColors(self):
         # color the board
