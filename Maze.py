@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QGridLayout, QWidget, QApplication
 import Cell
 from PyQt5.QtWidgets import QSizePolicy
 import grid
+from Player import Player
 
 from PyQt5.QtCore import QRect
 
@@ -30,8 +31,8 @@ class Maze(QtWidgets.QWidget):
             for alpha in range(self.width):  # Y axis
                 c = Cell.Cell(numeric, alpha)
                 if alpha == 0 or numeric == 0:
-                    c.setText(chr(97 + alpha) + ", " + str(numeric + 1))
-                # c.setText(str(numeric * 16 + alpha))
+                    # c.setText(chr(97 + alpha) + ", " + str(numeric + 1))
+                    c.setText("")
                 self.grid.addWidget(c, numeric, alpha)
                 row.append(c)
             self.cells.append(row)
@@ -100,5 +101,8 @@ class Maze(QtWidgets.QWidget):
             print("[" + ", ".join(map(str, row)) + "]")
         print("---------------------------------------------------------------")
 
+    def updatePlayer(self, player: Player):
+        flat_list = [item for sublist in self.cells for item in sublist]
+        flat_list[player.position].setText(player.name[0])
 
 

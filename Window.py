@@ -7,6 +7,7 @@ import grid
 from PyQt5.QtCore import QRect, Qt
 import Cell, Maze
 import math
+from Player import Player
 
 
 class Window(QWidget):
@@ -110,6 +111,8 @@ class Window(QWidget):
         for index in path:
             self.maze.highlightCell(index, color)
 
+    def updatePlayer(self, player: Player):
+        self.maze.updatePlayer(player)
 
 # if __name__ == "__main__":
 #     app = QApplication(sys.argv)
