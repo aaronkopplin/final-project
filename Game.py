@@ -32,7 +32,6 @@ class Game:
         die2 = random.randint(1, 6)
 
         # try to close the distance with the other players
-
         enemies = self.teams[0].players
         teammates = self.teams[1].players
         for teammate in teammates:
@@ -46,7 +45,10 @@ class Game:
                 self.window.highlightCells(path, "red")
 
                 startLocation = teammate.position
+                # if player speed is 10, then move ten spaces unless the path is shorter than 10, then use path[-1]
                 endLocation = path[teammate.currentSpeed()] if teammate.currentSpeed() < len(path) else path[-1]
+
+                # add logic here to the path to stop the movement if there is a player or water in the way.
                 self.movePlayer(teammate, startLocation, endLocation)
             else:
                 print("GAME OVER, ALL ENEMIES OK'D")

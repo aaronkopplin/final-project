@@ -24,11 +24,7 @@
   <component name="ChangeListManager">
     <list default="true" id="558add01-ac2e-4788-b87d-3cd98b766d04" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dial.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dial.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maze.py" beforeDir="false" afterPath="$PROJECT_DIR$/Maze.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/Player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +168,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606929139931</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="moving players on each turn. needs work">
+      <created>1606934642963</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1606934642963</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -190,7 +193,8 @@
     <MESSAGE value="update the map so that our characters will not walk over the roof which is supposed to be unreachable terrain" />
     <MESSAGE value="forgot to add the map.py file" />
     <MESSAGE value="moving command line" />
-    <option name="LAST_COMMIT_MESSAGE" value="moving command line" />
+    <MESSAGE value="moving players on each turn. needs work" />
+    <option name="LAST_COMMIT_MESSAGE" value="moving players on each turn. needs work" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
