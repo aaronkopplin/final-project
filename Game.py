@@ -74,7 +74,7 @@ class Game:
                     steps += 1
 
             else:
-                print("GAME OVER, ALL ENEMIES OK'D")
+                print("GAME OVER, ALL ENEMIES KO'D")
 
     def movePlayer(self, player: Player, startLoc: int, endLoc: int):
         player.move(endLoc)

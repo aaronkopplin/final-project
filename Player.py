@@ -18,3 +18,9 @@ class Player:
 
     def printDial(self):
         self.dial.printDial()
+
+    def takeDamage(self, attack_total: int, damage: int):
+        if (attack_total < self.dial.defence):
+            return
+        for click in range(damage):
+            self.dial.click()
