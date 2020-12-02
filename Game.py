@@ -15,8 +15,12 @@ class Game:
         self.window.takeTurnButton.clicked.connect(self.takeTurn)
         self.window.moveButton.clicked.connect(self.moveCharacter)
         self.window.dealDamagebutton.clicked.connect(self.dealDamage)
+        self.window.undoButton.clicked.connect(self.undo)
         self.teams = [Team([]), Team([])]
         self.window.loadMap(map.map)
+
+    def undo(self):
+        print("undo")
 
     def dealDamage(self):
         args = self.window.commandLine.text().split(" ")

@@ -54,6 +54,9 @@ class Window(QWidget):
         self.dealDamagebutton = QtWidgets.QPushButton("Deal Damage")
         verticalLayout.addWidget(self.dealDamagebutton)
 
+        self.undoButton = QtWidgets.QPushButton("Undo")
+        verticalLayout.addWidget(self.undoButton)
+
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         verticalLayout.addItem(spacerItem)
         self.grid.addLayout(verticalLayout, 0, 1,1,1)
