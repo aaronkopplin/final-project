@@ -1,13 +1,9 @@
-import copy
-import sys
 from PyQt5 import  QtWidgets
-from PyQt5.QtWidgets import QGridLayout, QWidget, QApplication, QVBoxLayout, QSpacerItem, QSplitter, QRadioButton, QLineEdit
+from PyQt5.QtWidgets import QGridLayout, QWidget, QLineEdit
 from PyQt5.QtWidgets import QSizePolicy
-import grid
 from PyQt5.QtCore import QRect, Qt
 import Cell, Maze
 import math
-import map
 from Player import Player
 
 

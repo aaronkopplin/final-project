@@ -1,8 +1,5 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QSizePolicy
-from PyQt5 import QtCore
-# import CellStyling
-from enum import Enum
 import re
 
 

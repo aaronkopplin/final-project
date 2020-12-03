@@ -1,4 +1,5 @@
-from Dial import  Dial
+from Dial import Dial
+import copy
 
 class Player:
     def __init__(self, position: int, health: int, name: str, dial: Dial, team: int):
@@ -9,6 +10,9 @@ class Player:
         self.team = team
         self.id = self.name[0] + str(self.team)
         self.isKOd = False
+
+    def currentSpeed(self):
+        return copy.deepcopy(self.dial.currentSpeed())
 
     def move(self, position: int):
         self.position = position
