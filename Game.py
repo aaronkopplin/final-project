@@ -7,6 +7,7 @@ from Dial import Dial
 from PyQt5.QtWidgets import QApplication
 import the_map
 import math
+import copy
 
 class Game:
     def __init__(self):
@@ -20,6 +21,17 @@ class Game:
         for button in self.window.playerButtons:
             button.clicked.connect(self.playerButtonListener)
         self.currentPath = []
+        self.window.printStatsButton.clicked.connect(self.printStats)
+
+    def printStats(self):
+        args = self.window.commandLine.text().split(" ")
+        if len(args) == 0:
+            print("no value supplied")
+            return
+        if len(args) > 1:
+            print("one character at a time please")
+            return
+        self.getPlayer(args[0]).dial.printDial(args[0])
 
     def playerButtonListener(self):
         def getTargetEnemy():
@@ -51,10 +63,10 @@ class Game:
                 teammate = self.getPlayer(button.text())
                 print(teammate.id)
                 print(getTargetEnemy().id)
-                print("start pos " + str(teammate.position) + " target pos " + str(getTargetEnemy().position))
+                # print("start pos " + str(teammate.position) + " target pos " + str(getTargetEnemy().position))
 
                 path = self.window.maze.getPathTo(teammate.position, getTargetEnemy().position)
-                print(path)
+                # print(path)
                 speed = teammate.currentSpeed()
                 started_in_water = False
                 if path.pop(0) in grid.WATER:
@@ -91,13 +103,33 @@ class Game:
 
     def dealDamage(self):
         args = self.window.commandLine.text().split(" ")
-        if (len(args) < 1):
+        if (len(args) < 1 or len(args) > 3):
             return
 
-        for player in self.getPlayers():
-            if player.id == args[0]:
-                player.takeDamage(int(args[1]), int(args[2]))
-                break
+        attacking_player = self.getPlayer(args[0])
+        defending_player = self.getPlayer(args[1])
+
+        if not attacking_player or not defending_player:
+            print("player not found")
+            return
+
+        defending_player.takeDamage(int(args[2]), attacking_player.dial.currentDamage())
+        if defending_player.isKOd:
+            new_team0 = []
+            new_team1 = []
+            for player in self.getPlayers():
+                if player.id != defending_player.id:
+                    if player.team == 0:
+                        new_team0.append(player)
+                    elif player.team == 1:
+                        new_team1.append(player)
+
+            self.teams[0].players = new_team0
+            self.teams[1].players = new_team1
+            self.window.refreshBoard(self.getPlayers())
+            print("player KO'd")
+        else:
+            defending_player.printDial()
 
     def addPlayer(self, team: int, player: Player):
         self.teams[team].players.append(player)
@@ -178,8 +210,8 @@ if __name__ == "__main__":
     game.addPlayer(0, Player(2, 100, "Iron Man", ironMansDial, 0))
 
     # add team 1
-    game.addPlayer(1, Player(221, 100, "Thor", thorsDial, 1))
-    game.addPlayer(1, Player(222, 100, "Captain America", captainAmericasDial, 1))
-    game.addPlayer(1, Player(223, 100, "Iron Man", ironMansDial, 1))
+    game.addPlayer(1, Player(221, 100, "Thor", copy.deepcopy(thorsDial), 1))
+    game.addPlayer(1, Player(222, 100, "Captain America", copy.deepcopy(captainAmericasDial), 1))
+    game.addPlayer(1, Player(223, 100, "Iron Man", copy.deepcopy(ironMansDial), 1))
 
     sys.exit(app.exec_())  # necessary
