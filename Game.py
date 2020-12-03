@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QApplication
 import the_map
 import math
 import copy
+import DefaultCharacters
 
 class Game:
     def __init__(self):
@@ -103,11 +104,18 @@ class Game:
 
     def dealDamage(self):
         args = self.window.commandLine.text().split(" ")
+
+        if len(args) == 2:
+            self.getPlayer(args[0]).takeDamage(99999, int(args[1]))
+            self.getPlayer(args[0]).printDial()
+            return
+
         if (len(args) < 1 or len(args) > 3):
             return
 
         attacking_player = self.getPlayer(args[0])
         defending_player = self.getPlayer(args[1])
+
 
         if not attacking_player or not defending_player:
             print("player not found")
@@ -192,30 +200,16 @@ if __name__ == "__main__":
     game.resetGridColors()
 
     # make the dials
-    thorsDial = Dial(150, 6)
-    thorsDial.speed = [10,10,10,10,10,10,9,9,9,0,0,0]
-    thorsDial.attack = [11,11,11,10,10,10,9,9,9,0,0,0]
-    thorsDial.defence = [18,17,17,17,17,17,17,17,16,0,0,0]
-    thorsDial.damage = [4, 4, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0]
-    captainAmericasDial = Dial(50, 5)
-    captainAmericasDial.speed = [8, 7, 7, 6, 6, 5, 0, 0, 0, 0, 0, 0]
-    captainAmericasDial.attack = [11, 10, 10, 9, 9, 9, 0, 0, 0, 0, 0, 0]
-    captainAmericasDial.defence = [17, 17, 17, 16, 16, 17, 0, 0, 0, 0, 0, 0]
-    captainAmericasDial.damage = [3, 3, 3, 2, 2, 2, 0, 0, 0, 0, 0, 0]
-    ironMansDial = Dial(100, 7)
-    ironMansDial.speed = [10,10,10,9,9,8,8,0,0,0,0,0]
-    ironMansDial.attack = [10,10,10,9,9,9,9,0,0,0,0,0]
-    ironMansDial.defence = [18,17,17,17,17,16,16,0,0,0,0,0]
-    ironMansDial.damage = [4, 3, 3, 2, 2, 2, 2, 0, 0, 0, 0, 0]
+
 
     # add team 0
-    game.addPlayer(0, Player(0, 100, "Thor", thorsDial, 0))
-    game.addPlayer(0, Player(1, 100, "Captain America", captainAmericasDial, 0))
-    game.addPlayer(0, Player(2, 100, "Iron Man", ironMansDial, 0))
+    game.addPlayer(0, Player(0, 100, "Thor", DefaultCharacters.thorsDial, 0))
+    game.addPlayer(0, Player(1, 100, "Captain America", DefaultCharacters.captainAmericasDial, 0))
+    game.addPlayer(0, Player(2, 100, "Iron Man", DefaultCharacters.ironMansDial, 0))
 
     # add team 1
-    game.addPlayer(1, Player(221, 100, "Thor", copy.deepcopy(thorsDial), 1))
-    game.addPlayer(1, Player(222, 100, "Captain America", copy.deepcopy(captainAmericasDial), 1))
-    game.addPlayer(1, Player(223, 100, "Iron Man", copy.deepcopy(ironMansDial), 1))
+    game.addPlayer(1, Player(221, 100, "Thor", copy.deepcopy(DefaultCharacters.thorsDial), 1))
+    game.addPlayer(1, Player(222, 100, "Captain America", copy.deepcopy(DefaultCharacters.captainAmericasDial), 1))
+    game.addPlayer(1, Player(223, 100, "Iron Man", copy.deepcopy(DefaultCharacters.ironMansDial), 1))
 
     sys.exit(app.exec_())  # necessary
