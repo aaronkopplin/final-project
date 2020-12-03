@@ -158,6 +158,10 @@ class Game:
                     self.movePlayer(teammate, teammate.position, self.currentPath[-1])
                 else:
                     print("the current path length is zero")
+                self.window.radioGroup.setExclusive(False)
+                button.setChecked(False)
+                self.window.radioGroup.setExclusive(True)
+                self.resetGridColors()
 
     def getPlayers(self):
         players = []
