@@ -23,6 +23,27 @@ class Game:
             button.clicked.connect(self.playerButtonListener)
         self.currentPath = []
         self.window.printStatsButton.clicked.connect(self.printStats)
+        self.window.resetCharacterButton.clicked.connect(self.resetCharacter)
+
+    def resetCharacter(self):
+        # characterID spawnLoc
+        args = self.window.commandLine.text().split(" ")
+        if len(args) == 2:
+            char_name = ""
+            dial = None
+            if str(args[0][0]) == "T":
+                char_name = "Thor"
+                dial = copy.deepcopy(DefaultCharacters.thorsDial)
+            if args[0][0] == "C":
+                char_name = "Capitain America"
+                dial = copy.deepcopy(DefaultCharacters.captainAmericasDial)
+            if args[0][0] == "I":
+                char_name = "Iron Man"
+                dial = copy.deepcopy(DefaultCharacters.ironMansDial)
+            game.createPlayer(int(args[0][1]), int(args[1]), char_name, dial)
+            self.window.refreshBoard(self.getPlayers())
+
+
 
     def printStats(self):
         args = self.window.commandLine.text().split(" ")
@@ -139,15 +160,16 @@ class Game:
         else:
             defending_player.printDial()
 
-    def addPlayer(self, team: int, player: Player):
+    def addPlayer(self, team: int, player: Player, is_reset=False):
         self.teams[team].players.append(player)
 
         # update the color of the board
         self.window.updatePlayer(player, player.position)
 
         # add a radio button
-        if len(self.teams[1].players) > 0:
-            self.window.playerButtons[len(self.teams[1].players) - 1].setText(self.teams[1].players[-1].id)
+        if not is_reset:
+            if len(self.teams[1].players) > 0:
+                self.window.playerButtons[len(self.teams[1].players) - 1].setText(self.teams[1].players[-1].id)
 
     def moveCharacter(self):
         args = self.window.commandLine.text().split(" ")
@@ -190,22 +212,21 @@ class Game:
         game.window.highlightCells(grid.ZONES, "violet")
         game.window.highlightCells(grid.ROOF, "lightyellow")
 
+    def createPlayer(self, team: int, spawnLoc: int, name: str, dial: Dial):
+        game.addPlayer(team, Player(spawnLoc, 100, name, dial, team), True)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     # make the game, the game has the window and the grid
     game = Game()
-
     game.resetGridColors()
 
-    # make the dials
-
-
     # add team 0
-    game.addPlayer(0, Player(0, 100, "Thor", DefaultCharacters.thorsDial, 0))
-    game.addPlayer(0, Player(1, 100, "Captain America", DefaultCharacters.captainAmericasDial, 0))
-    game.addPlayer(0, Player(2, 100, "Iron Man", DefaultCharacters.ironMansDial, 0))
+    game.addPlayer(0, Player(0, 100, "Thor", copy.deepcopy(DefaultCharacters.thorsDial), 0))
+    game.addPlayer(0, Player(1, 100, "Captain America", copy.deepcopy(DefaultCharacters.captainAmericasDial), 0))
+    game.addPlayer(0, Player(2, 100, "Iron Man", copy.deepcopy(DefaultCharacters.ironMansDial), 0))
 
     # add team 1
     game.addPlayer(1, Player(221, 100, "Thor", copy.deepcopy(DefaultCharacters.thorsDial), 1))

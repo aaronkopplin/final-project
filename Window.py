@@ -62,6 +62,10 @@ class Window(QWidget):
         self.printStatsButton = QtWidgets.QPushButton("Print Stats")
         verticalLayout.addWidget(self.printStatsButton)
 
+        self.resetCharacterButton = QtWidgets.QPushButton("Reset Character")
+        verticalLayout.addWidget(self.resetCharacterButton)
+        self.resetCharacterButton.setEnabled(False)
+
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         verticalLayout.addItem(spacerItem)
         self.grid.addLayout(verticalLayout, 0, 1,1,1)
