@@ -1,5 +1,6 @@
 from Dial import Dial
 
+# default dials for all characters
 thorsDial = Dial(150, 6)
 thorsDial.speed = [10,10,10,10,10,10,9,9,9,0,0,0]
 thorsDial.attack = [11,11,11,10,10,10,9,9,9,0,0,0]
