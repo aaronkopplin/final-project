@@ -1,6 +1,6 @@
 import copy
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QGridLayout, QWidget, QApplication
+from PyQt5.QtWidgets import QGridLayout
 import Cell
 from PyQt5.QtWidgets import QSizePolicy
 from Player import Player
@@ -10,6 +10,7 @@ import the_map
 
 
 class Maze(QtWidgets.QWidget):
+    # Constructor to make the map.
     def __init__(self, width, height):
         super().__init__()
         self.width = width
@@ -23,6 +24,8 @@ class Maze(QtWidgets.QWidget):
         self.BuildGrid()
         self.show()
 
+    # getPathTo Method
+    # Uses a* search algorithm to get optimal path to location.
     def getPathTo(self, start: int, end: int):
         path = self.aStarSearch(min(start, end), max(start, end), the_map.map)
         if start == max(start, end):
@@ -53,13 +56,11 @@ class Maze(QtWidgets.QWidget):
                     currentNodeIndex = nodeIndex
 
             # Remove the current node from the open list, then append it to the closed list.
-            # print("Traversing to Node: {0}".format(currentNodeIndex))
             openSet.remove(currentNodeIndex)
             closedSet.append(currentNodeIndex)
 
-            # Goal node found. Print final path.
+            # Goal node found. Return final path.
             if (currentNodeIndex == goalIndex):
-                # print("!!! GOAL NODE FOUND !!!")
 
                 # Traverse the dictionary to obtain optimal path.
                 total_path = [currentNodeIndex]
@@ -67,9 +68,6 @@ class Maze(QtWidgets.QWidget):
                     currentNodeIndex = path[currentNodeIndex]
                     total_path = [currentNodeIndex] + total_path
 
-                # Being lazy, not formatting the best. Just printing the path as a list.
-                # print("Optimal path to goal node:")
-                # print(total_path)
                 return total_path
 
             # Grab all adjacent nodes. (Children)
@@ -96,25 +94,30 @@ class Maze(QtWidgets.QWidget):
                 path[child] = currentNodeIndex
                 openSet.append(child)
 
+    # BuildGrid Method
+    # Method used to add the grid to the main window. (Qt Widgets)
     def BuildGrid(self):
         for numeric in range(self.height):  # X axis
             row = []
             for alpha in range(self.width):  # Y axis
                 c = Cell.Cell(numeric, alpha)
                 if alpha == 0 or numeric == 0:
-                    # c.setText(chr(97 + alpha) + ", " + str(numeric + 1))
                     c.setText("")
                 self.grid.addWidget(c, numeric, alpha)
                 row.append(c)
             self.cells.append(row)
 
+    # setWalls Method
+    # Used manually to set walls in the adjacency matrix.
     def setWalls(self, leftWall: bool, rightWall: bool, topWall: bool, bottomWall: bool):
         for row in self.cells:
             for cell in row:
                 cell.setWalls(leftWall, rightWall, topWall, bottomWall)
 
+    # loadGridFromMatrix Method
+    # Method used to set walls on map when the program loads.
     def loadGridFromMatrix(self, matrix: list):
-        matrix = copy.deepcopy(matrix)
+        matrix = copy.deepcopy(matrix) # Create a copy of the matrix.
         for row in range(self.height):
             for column in range(self.width):
                 adjacencyForCell = matrix.pop(0) # get the first row of the matrix
@@ -160,20 +163,19 @@ class Maze(QtWidgets.QWidget):
                 rows.append(adjacencyRow)
         return rows
 
+    # highlightCell Method
+    # Method used to highlight a cell. Generally called to highlight cells of interest. (Water/Paths/Etc)
     def highlightCell(self, index: int, color: str):
         # index is the 0 -255 index of the cell to be high lighted
         # convert the index to x, y
         self.cells[int(index / self.width)][index % self.height].changeBackgroundColor(color)
 
+    # Save a copy of the instantiated adjacency matrix to a file.
     def printAdjacencyMatrix(self):
         mat = self.produceAdjacencyMartix()
-        # print("---------------------------------------------------------------")
-        # for row in mat:
-        #     print("[" + ", ".join(map(str, row)) + "]")
-        # print("---------------------------------------------------------------")
 
         file_name = "the_map.py"
-        if os.path.exists(file_name):
+        if os.path.exists(file_name): # Delete any existing matrix.
             os.remove(file_name)
         file = open(file_name, "x")
         file.write("map = [")
@@ -188,13 +190,17 @@ class Maze(QtWidgets.QWidget):
         # write the closing bracket
         file.write("]")
 
+    # refreshBoard Method
+    # Method used to update text for each cell on the board.
     def refreshBoard(self, players: list):
         flat_list = [item for sublist in self.cells for item in sublist]
-        for cell in flat_list:
+        for cell in flat_list: # Set all cells to nothing.
             cell.setText("")
-        for player in players:
+        for player in players: # Update the necessary cells.
             flat_list[player.position].setText(player.id)
 
+    # updatePlayer Method
+    # Method used to update a single player. (More efficient than refreshing the entire board.)
     def updatePlayer(self, player: Player, previousPos: int):
         flat_list = [item for sublist in self.cells for item in sublist]
         flat_list[previousPos].setText("")
