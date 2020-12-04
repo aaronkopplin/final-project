@@ -99,7 +99,12 @@ class Game:
                 print(getTargetEnemy().id)
 
                 # get the path to the target enemies position
-                path = self.window.maze.getPathTo(teammate.position, getTargetEnemy().position)
+                path = []
+                try:
+                    path = self.window.maze.getPathTo(teammate.position, getTargetEnemy().position)
+                except:
+                    print("path not found")
+                    return
 
                 # this is how many steps the player is allowed to take
                 speed = teammate.currentSpeed()
