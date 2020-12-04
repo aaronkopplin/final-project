@@ -2,6 +2,7 @@ import sys
 import random
 from PyQt5 import QtCore, QtWidgets, QtGui
 
+# depreceiated
 class MyWidget(QtWidgets.QWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
