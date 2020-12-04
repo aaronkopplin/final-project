@@ -114,6 +114,7 @@ class Game:
                         try:
                             path = self.window.maze.getPathTo(teammate.position, location)
                             print("target location: " + str(location))
+                            break
                         except:
                             pass
 
@@ -222,7 +223,8 @@ class Game:
         for player in self.getPlayers():
             if player.id == args[0]:
                 oldPos = player.position
-                player.move(int(args[1]))
+                positionComps = args[1].split(",")
+                player.move((int(positionComps[0]) * 16) + int(positionComps[1]))
                 self.window.updatePlayer(player, oldPos)
 
     # this will move the player along the path to the end of the path.
