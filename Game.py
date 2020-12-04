@@ -9,6 +9,7 @@ import the_map
 import math
 import copy
 import DefaultCharacters
+import random
 
 # keeps track of the state of the game
 class Game:
@@ -95,15 +96,29 @@ class Game:
             # find the player that is selected from the radio buttons. Should be Tt, C1, or I1
             if button.isChecked():
                 teammate = self.getPlayer(button.text())
-                print(teammate.id)
-                print(getTargetEnemy().id)
 
                 # get the path to the target enemies position
                 path = []
-                try:
-                    path = self.window.maze.getPathTo(teammate.position, getTargetEnemy().position)
-                except:
-                    print("path not found")
+                for enemy in self.teams[0].players:
+                    try:
+                        path = self.window.maze.getPathTo(teammate.position, enemy.position)
+                        print("target enemy: " + enemy.id)
+                        break
+                    except:
+                        pass
+
+                if len(path) == 0:
+                    print("finding alternate path")
+                    locations = [random.randint(0, 255) for i in range(255)]
+                    for location in locations:
+                        try:
+                            path = self.window.maze.getPathTo(teammate.position, location)
+                            print("target location: " + str(location))
+                        except:
+                            pass
+
+                if len(path) == 0:
+                    print("path not found!")
                     return
 
                 # this is how many steps the player is allowed to take
