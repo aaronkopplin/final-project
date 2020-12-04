@@ -5,8 +5,10 @@ from Window import Window
 import grid
 from Dial import Dial
 from PyQt5.QtWidgets import QApplication
-import map
-import random
+import the_map
+import math
+import copy
+import DefaultCharacters
 
 class Game:
     def __init__(self):
@@ -16,27 +18,100 @@ class Game:
         self.window.dealDamagebutton.clicked.connect(self.dealDamage)
         self.window.undoButton.clicked.connect(self.undo)
         self.teams = [Team([]), Team([])]
-        self.window.loadMap(map.map)
+        self.window.loadMap(the_map.map)
         for button in self.window.playerButtons:
             button.clicked.connect(self.playerButtonListener)
+        self.currentPath = []
+        self.window.printStatsButton.clicked.connect(self.printStats)
+        self.window.resetCharacterButton.clicked.connect(self.resetCharacter)
+
+    def resetCharacter(self):
+        # characterID spawnLoc
+        args = self.window.commandLine.text().split(" ")
+        if len(args) == 2:
+            char_name = ""
+            dial = None
+            if str(args[0][0]) == "T":
+                char_name = "Thor"
+                dial = copy.deepcopy(DefaultCharacters.thorsDial)
+            if args[0][0] == "C":
+                char_name = "Capitain America"
+                dial = copy.deepcopy(DefaultCharacters.captainAmericasDial)
+            if args[0][0] == "I":
+                char_name = "Iron Man"
+                dial = copy.deepcopy(DefaultCharacters.ironMansDial)
+            game.createPlayer(int(args[0][1]), int(args[1]), char_name, dial)
+            self.window.refreshBoard(self.getPlayers())
+
+
+
+    def printStats(self):
+        args = self.window.commandLine.text().split(" ")
+        if len(args) == 0:
+            print("no value supplied")
+            return
+        if len(args) > 1:
+            print("one character at a time please")
+            return
+        self.getPlayer(args[0]).dial.printDial(args[0])
 
     def playerButtonListener(self):
         def getTargetEnemy():
             return [enemy for enemy in self.teams[0].players if not enemy.isKOd][0]
+
+        def playerOnCell(cell: int):
+            for player in self.getPlayers():
+                if player.position == cell:
+                    return True
+            return False
+
+        def getCellsAdjacentTo(cell: int):
+            # return [cell + 1, cell - 1, cell + 16, cell - 16, cell + 16 + 1, cell + 16 - 1, cell - 16 + 1,
+            #         cell - 16 - 1]
+            # x = math.floor(cell / 16)
+            # y = cell % 16
+            # return [self.window.maze[][]]
+            return [i for i in range(len(the_map.map[cell])) if the_map.map[i] == 1]
+
+        def cellNextToEnemy(cell: int):
+            for enemy in self.teams[0].players:
+                if cell in getCellsAdjacentTo(enemy.position):
+                    return True
+            return False
+
         # display the proposed path for the player that is selected
         for button in self.window.playerButtons:
             if button.isChecked():
                 teammate = self.getPlayer(button.text())
                 print(teammate.id)
                 print(getTargetEnemy().id)
+                # print("start pos " + str(teammate.position) + " target pos " + str(getTargetEnemy().position))
 
                 path = self.window.maze.getPathTo(teammate.position, getTargetEnemy().position)
+                # print(path)
+                speed = teammate.currentSpeed()
+                started_in_water = False
+                if path.pop(0) in grid.WATER:
+                    speed = speed/2
+                    started_in_water = True
 
-                # for cell in path:
+                good_path = []
+                # hit water, player in the way, next to an enemy
+                for cell in path:
+                    if ((cell in grid.WATER and not started_in_water) or cellNextToEnemy(cell)) \
+                            and not playerOnCell(cell):
+                        good_path.append(cell)
+                        break
 
+                    if playerOnCell(cell) or path.index(cell) >= speed:
+                        break
+                    else:
+                        good_path.append(cell)
 
+                path = good_path
                 self.resetGridColors()
                 self.window.highlightCells(path, "red")
+                self.currentPath = path
 
 
     def undo(self):
@@ -50,23 +125,51 @@ class Game:
 
     def dealDamage(self):
         args = self.window.commandLine.text().split(" ")
-        if (len(args) < 1):
+
+        if len(args) == 2:
+            self.getPlayer(args[0]).takeDamage(99999, int(args[1]))
+            self.getPlayer(args[0]).printDial()
             return
 
-        for player in self.getPlayers():
-            if player.id == args[0]:
-                player.takeDamage(int(args[1]), int(args[2]))
-                break
+        if (len(args) < 1 or len(args) > 3):
+            return
 
-    def addPlayer(self, team: int, player: Player):
+        attacking_player = self.getPlayer(args[0])
+        defending_player = self.getPlayer(args[1])
+
+
+        if not attacking_player or not defending_player:
+            print("player not found")
+            return
+
+        defending_player.takeDamage(int(args[2]), attacking_player.dial.currentDamage())
+        if defending_player.isKOd:
+            new_team0 = []
+            new_team1 = []
+            for player in self.getPlayers():
+                if player.id != defending_player.id:
+                    if player.team == 0:
+                        new_team0.append(player)
+                    elif player.team == 1:
+                        new_team1.append(player)
+
+            self.teams[0].players = new_team0
+            self.teams[1].players = new_team1
+            self.window.refreshBoard(self.getPlayers())
+            print("player KO'd")
+        else:
+            defending_player.printDial()
+
+    def addPlayer(self, team: int, player: Player, is_reset=False):
         self.teams[team].players.append(player)
 
         # update the color of the board
         self.window.updatePlayer(player, player.position)
 
         # add a radio button
-        if len(self.teams[1].players) > 0:
-            self.window.playerButtons[len(self.teams[1].players) - 1].setText(self.teams[1].players[-1].id)
+        if not is_reset:
+            if len(self.teams[1].players) > 0:
+                self.window.playerButtons[len(self.teams[1].players) - 1].setText(self.teams[1].players[-1].id)
 
     def moveCharacter(self):
         args = self.window.commandLine.text().split(" ")
@@ -78,63 +181,17 @@ class Game:
                 self.window.updatePlayer(player, oldPos)
 
     def takeTurn(self):
-        def getCellsAdjacentTo(cell: int):
-            return [cell + 1, cell - 1, cell + 16, cell - 16, cell + 16 + 1, cell + 16 - 1, cell - 16 + 1,
-                    cell - 16 - 1]
-
-        def cellNextToEnemy(cell: int, enemies: list):
-            for enemy in enemies:
-                if cell in getCellsAdjacentTo(enemy.position):
-                    return True
-            return False
-
-        def playerOnCell(cell: int):
-            for player in self.getPlayers():
-                if player.position == cell:
-                    return True
-            return False
-
-        print("turn")
-        die1 = random.randint(1, 6)
-        die2 = random.randint(1, 6)
-
-        # try to close the distance with the other players
-        # seek out the first enemy that is not ko'd and have all teammates close on that enemy
-        enemies = [enemy for enemy in self.teams[0].players if not enemy.isKOd]
-        teammates = [member for member in self.teams[1].players if not member.isKOd]
-        for teammate in teammates:
-            if len(enemies) > 0:
-                enemy = enemies[0]
-                path = self.window.maze.getPathTo(teammate.position, enemy.position)
-
+        for button in self.window.playerButtons:
+            if button.isChecked():
+                teammate = self.getPlayer(button.text())
+                if len(self.currentPath) > 0:
+                    self.movePlayer(teammate, teammate.position, self.currentPath[-1])
+                else:
+                    print("the current path length is zero")
+                self.window.radioGroup.setExclusive(False)
+                button.setChecked(False)
+                self.window.radioGroup.setExclusive(True)
                 self.resetGridColors()
-                self.window.highlightCells(path, "red")
-
-                # if you move next to an opposing player or into hindering terrain, you have to stop moving
-                # if you begin a move in hindering terrain, you halve your speed value before moving
-                # if you being a move next to an opposing player, you have to break away first. to do so, roll a
-                # d6 if you roll 4-6 you can move, else your action is over.
-                steps = 0
-                while True:
-                    if steps >= teammate.currentSpeed():
-                        print("steps >= teammate speed ")
-                        break
-                    if len(path) == 1:
-                        print("len path = 1")
-                        break
-                    if cellNextToEnemy(path[1], enemies):
-                        print("cell next to enemy")
-                        break
-                    if playerOnCell(path[1]):
-                        print("curr pos: " + str(teammate.position) + " next position: " + str(path[1]))
-                        print("player on cell")
-                        break
-
-                    self.movePlayer(teammate, teammate.position, path.pop(0))
-                    steps += 1
-
-            else:
-                print("GAME OVER, ALL ENEMIES KO'D")
 
     def getPlayers(self):
         players = []
@@ -146,7 +203,6 @@ class Game:
 
     def movePlayer(self, player: Player, startLoc: int, endLoc: int):
         player.move(endLoc)
-        # self.window.updatePlayer(player, startLoc)
         self.window.refreshBoard(self.getPlayers())
 
     def resetGridColors(self):
@@ -156,40 +212,25 @@ class Game:
         game.window.highlightCells(grid.ZONES, "violet")
         game.window.highlightCells(grid.ROOF, "lightyellow")
 
+    def createPlayer(self, team: int, spawnLoc: int, name: str, dial: Dial):
+        game.addPlayer(team, Player(spawnLoc, 100, name, dial, team), True)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     # make the game, the game has the window and the grid
     game = Game()
-
     game.resetGridColors()
 
-    # make the dials
-    thorsDial = Dial(150, 6)
-    thorsDial.speed = [10,10,10,10,10,10,9,9,9,0,0,0]
-    thorsDial.attack = [11,11,11,10,10,10,9,9,9,0,0,0]
-    thorsDial.defence = [18,17,17,17,17,17,17,17,16,0,0,0]
-    thorsDial.damage = [4, 4, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0]
-    captainAmericasDial = Dial(50, 5)
-    captainAmericasDial.speed = [8, 7, 7, 6, 6, 5, 0, 0, 0, 0, 0, 0]
-    captainAmericasDial.attack = [11, 10, 10, 9, 9, 9, 0, 0, 0, 0, 0, 0]
-    captainAmericasDial.defence = [17, 17, 17, 16, 16, 17, 0, 0, 0, 0, 0, 0]
-    captainAmericasDial.damage = [3, 3, 3, 2, 2, 2, 0, 0, 0, 0, 0, 0]
-    ironMansDial = Dial(100, 7)
-    ironMansDial.speed = [10,10,10,9,9,8,8,0,0,0,0,0]
-    ironMansDial.attack = [10,10,10,9,9,9,9,0,0,0,0,0]
-    ironMansDial.defence = [18,17,17,17,17,16,16,0,0,0,0,0]
-    ironMansDial.damage = [4, 3, 3, 2, 2, 2, 2, 0, 0, 0, 0, 0]
-
     # add team 0
-    game.addPlayer(0, Player(0, 100, "Thor", thorsDial, 0))
-    game.addPlayer(0, Player(1, 100, "Captain America", captainAmericasDial, 0))
-    game.addPlayer(0, Player(2, 100, "Iron Man", ironMansDial, 0))
+    game.addPlayer(0, Player(0, 100, "Thor", copy.deepcopy(DefaultCharacters.thorsDial), 0))
+    game.addPlayer(0, Player(1, 100, "Captain America", copy.deepcopy(DefaultCharacters.captainAmericasDial), 0))
+    game.addPlayer(0, Player(2, 100, "Iron Man", copy.deepcopy(DefaultCharacters.ironMansDial), 0))
 
     # add team 1
-    game.addPlayer(1, Player(221, 100, "Thor", thorsDial, 1))
-    game.addPlayer(1, Player(222, 100, "Captain America", captainAmericasDial, 1))
-    game.addPlayer(1, Player(223, 100, "Iron Man", ironMansDial, 1))
+    game.addPlayer(1, Player(221, 100, "Thor", copy.deepcopy(DefaultCharacters.thorsDial), 1))
+    game.addPlayer(1, Player(222, 100, "Captain America", copy.deepcopy(DefaultCharacters.captainAmericasDial), 1))
+    game.addPlayer(1, Player(223, 100, "Iron Man", copy.deepcopy(DefaultCharacters.ironMansDial), 1))
 
     sys.exit(app.exec_())  # necessary

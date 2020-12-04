@@ -1,16 +1,12 @@
 import copy
-
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QGridLayout, QWidget, QApplication
 import Cell
 from PyQt5.QtWidgets import QSizePolicy
-import grid
 from Player import Player
 import os
 import math
-import map
-from PyQt5.QtCore import QRect
-
+import the_map
 
 
 class Maze(QtWidgets.QWidget):
@@ -28,7 +24,7 @@ class Maze(QtWidgets.QWidget):
         self.show()
 
     def getPathTo(self, start: int, end: int):
-        path = self.aStarSearch(min(start, end), max(start, end), map.map)
+        path = self.aStarSearch(min(start, end), max(start, end), the_map.map)
         if start == max(start, end):
             path.reverse()
         return path
@@ -47,7 +43,7 @@ class Maze(QtWidgets.QWidget):
         # Continue while the open set is not empty.
         while len(openSet) > 0:
             # Start with the start node, and move on from there.
-            currentNodeIndex = 0
+            currentNodeIndex = startIndex
 
             # Check every node in the open set.
             for nodeIndex in openSet:
@@ -176,7 +172,7 @@ class Maze(QtWidgets.QWidget):
         #     print("[" + ", ".join(map(str, row)) + "]")
         # print("---------------------------------------------------------------")
 
-        file_name = "map.py"
+        file_name = "the_map.py"
         if os.path.exists(file_name):
             os.remove(file_name)
         file = open(file_name, "x")
@@ -189,7 +185,6 @@ class Maze(QtWidgets.QWidget):
         file.seek(0, os.SEEK_END)
         file.seek(file.tell() - 2, 0)
         file.truncate()
-
         # write the closing bracket
         file.write("]")
 

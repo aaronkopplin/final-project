@@ -27,14 +27,17 @@ class Dial:
         self.damage.pop(0)
         self.clickLevel += 1
 
-        if self.speed[0] == 0:
-            print ("PLAYER KO'D")
+    def isKod(self):
+        return self.speed[0] == 0
 
-    def printDial(self):
+    def printDial(self, id: str):
+        print("-------------------------------------------")
+        print("player id: " + id)
         print("click level: " + str(self.clickLevel))
         print("speed:\t\t" + " ".join(map(str, self.speed)))
         print("attack:\t\t" + " ".join(map(str, self.attack)))
         print("defence:\t" + " ".join(map(str, self.defence)))
-        print("damage:\t" + " ".join(map(str, self.damage)))
+        print("damage:\t\t" + " ".join(map(str, self.damage)))
         print("point value: " + str(self.pointValue))
         print("lightning bolt: " + str(self.lightningBolt))
+        print("-------------------------------------------")

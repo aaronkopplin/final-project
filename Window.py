@@ -1,13 +1,9 @@
-import copy
-import sys
 from PyQt5 import  QtWidgets
-from PyQt5.QtWidgets import QGridLayout, QWidget, QApplication, QVBoxLayout, QSpacerItem, QSplitter, QRadioButton, QLineEdit
+from PyQt5.QtWidgets import QGridLayout, QWidget, QLineEdit
 from PyQt5.QtWidgets import QSizePolicy
-import grid
 from PyQt5.QtCore import QRect, Qt
 import Cell, Maze
 import math
-import map
 from Player import Player
 
 
@@ -41,9 +37,11 @@ class Window(QWidget):
         self.commandLine = QLineEdit()
         verticalLayout.addWidget(self.commandLine)
 
+        self.radioGroup = QtWidgets.QButtonGroup()
         self.playerButtons = [QtWidgets.QRadioButton() for i in range(3)]
         for button in self.playerButtons:
             verticalLayout.addWidget(button)
+            self.radioGroup.addButton(button)
 
         self.printMAtrixButton = QtWidgets.QPushButton("Save Grid")
         verticalLayout.addWidget(self.printMAtrixButton)
@@ -60,6 +58,13 @@ class Window(QWidget):
 
         self.undoButton = QtWidgets.QPushButton("Undo")
         verticalLayout.addWidget(self.undoButton)
+
+        self.printStatsButton = QtWidgets.QPushButton("Print Stats")
+        verticalLayout.addWidget(self.printStatsButton)
+
+        self.resetCharacterButton = QtWidgets.QPushButton("Reset Character")
+        verticalLayout.addWidget(self.resetCharacterButton)
+        self.resetCharacterButton.setEnabled(False)
 
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         verticalLayout.addItem(spacerItem)
