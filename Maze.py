@@ -56,6 +56,7 @@ class Maze(QtWidgets.QWidget):
                     currentNodeIndex = nodeIndex
 
             # Remove the current node from the open list, then append it to the closed list.
+            print(openSet, currentNodeIndex)
             openSet.remove(currentNodeIndex)
             closedSet.append(currentNodeIndex)
 

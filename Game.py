@@ -75,10 +75,15 @@ class Game:
 
         # aks the adjacency matrix for the game what cells it is adjacent to.
         def getCellsAdjacentTo(cell: int):
-            print("cell -> " + str(cell))
-            cells = [i for i in range(len(the_map.map[cell])) if the_map.map[i] == 1]
-            print(cells)
-            return cells
+            # print("cell -> " + str(cell))
+            # cells = [i for i in range(len(the_map.map[cell])) if the_map.map[i] == 1]
+            # print(cells)
+            # return cells
+            print(str(cell))
+            x = cell / 16
+            y = cell % 16
+            print(str(x), str(y))
+            return []
 
         # returns true if the cell is next to any of the players on the enemy team.
         # cell is the 0 - 255 index of the cell
@@ -97,7 +102,12 @@ class Game:
                 print(getTargetEnemy().id)
 
                 # get the path to the target enemies position
-                path = self.window.maze.getPathTo(teammate.position, getTargetEnemy().position)
+                path = []
+                try:
+                    path = self.window.maze.getPathTo(teammate.position, getTargetEnemy().position)
+                except:
+                    print ("could not find path")
+                    return
 
                 # this is how many steps the player is allowed to take
                 speed = teammate.currentSpeed()
